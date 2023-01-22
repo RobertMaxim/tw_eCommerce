@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -13,14 +14,6 @@
         <form method="POST" class="form-signin" th:object="${userForm}" th:action="@{/register}">
 
             <h2 class="form-heading text-center">Create your account</h2>
-
-            <div class="form-floating mb-3">
-                <select th:onchange="rolechanged" name="userrole" id="userrole">
-                    <option value="client">Client</option>
-                    <option value="market">Market</option>
-                    <option value="warehouse">Warehouse</option>
-                </select>
-            </div>
 
             <div class="form-group">
                 <!-- Username -->
@@ -46,7 +39,7 @@
                            th:field="*{email}"
                            autofocus="true">
                     <label for="emailInput">Email</label>
-                    <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{username}"></span>
+                    <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
 
                 <!-- Password -->

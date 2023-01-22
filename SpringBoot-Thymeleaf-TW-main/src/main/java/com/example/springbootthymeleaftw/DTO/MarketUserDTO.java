@@ -3,23 +3,71 @@ package com.example.springbootthymeleaftw.DTO;
 import com.example.springbootthymeleaftw.model.entity.Market;
 import com.example.springbootthymeleaftw.model.entity.UserEntity;
 
+import javax.persistence.Column;
+
 public class MarketUserDTO {
-    private Market market;
-    private UserEntity user;
 
-    public Market getMarket() {
-        return market;
+    private String username;
+    private String email;
+    private String password;
+    private String passwordConfirm;
+
+    private String marketName;
+    private String address;
+    private String identificationCode;
+    public String getUsername() {
+        return username;
     }
 
-    public void setMarket(Market market) {
-        this.market = market;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getIdentificationCode() {
+        return identificationCode;
+    }
+
+    public void setIdentificationCode(String identificationCode) {
+        this.identificationCode = identificationCode;
     }
 }

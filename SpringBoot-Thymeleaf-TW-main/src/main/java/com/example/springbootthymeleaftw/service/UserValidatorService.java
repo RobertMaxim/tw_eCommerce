@@ -1,6 +1,7 @@
 package com.example.springbootthymeleaftw.service;
 
 import com.example.springbootthymeleaftw.model.entity.UserEntity;
+import com.example.springbootthymeleaftw.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -11,6 +12,8 @@ import org.springframework.validation.Validator;
 public class UserValidatorService implements Validator {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -38,14 +41,18 @@ public class UserValidatorService implements Validator {
         */
         String passwordRegexPattern = "^(?:(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*)[^\s]{8,}$";
 
+        Boolean alreadyExistingAccount=userRepository.findByEmail(user.getEmail()).isPresent();
         Boolean isValidUserLength = !(user.getUsername().length() < 2) && !(user.getUsername().length() > 32);
         Boolean isValidEmail =  user.getEmail().matches(emailRegexPattern);
         Boolean isValidPassword = user.getPassword().matches(passwordRegexPattern);
         Boolean arePasswordTheSame = user.getPassword().equals(user.getPasswordConfirm());
 
 
+
         if (!isValidUserLength)
             errors.rejectValue("username", "user.isValidUserLength");
+        if(alreadyExistingAccount)
+            errors.rejectValue("email","user.isUsedEmail");
         if(!isValidEmail)
             errors.rejectValue("email", "user.isValidEmail");
         if(!isValidPassword)

@@ -15,14 +15,6 @@
 
             <h2 class="form-heading text-center">Create your account</h2>
 
-            <div class="form-floating mb-3">
-                <select name="userrole" id="userrole">
-                    <option value="client" >Client</option>
-                    <option value="market">Market</option>
-                    <option value="warehouse">Warehouse</option>
-                </select>
-            </div>
-
             <div class="form-group">
                 <!-- Username -->
                 <div class="form-floating mb-3">
@@ -47,7 +39,7 @@
                            th:field="*{email}"
                            autofocus="true">
                     <label for="emailInput">Email</label>
-                    <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{username}"></span>
+                    <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
 
                 <!-- Password -->

@@ -6,6 +6,7 @@ import com.example.springbootthymeleaftw.repository.RoleRepository;
 import com.example.springbootthymeleaftw.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -29,26 +30,24 @@ public class UserService implements UserDetailsService {
         Optional<UserEntity> optUser = userRepository.findByEmail(email);
         if (optUser.isPresent()) {
             UserEntity appUser = optUser.get();
+
+            if (appUser.getRole() == null) {
+                throw new UsernameNotFoundException("User " + appUser.getUsername() + " has no authorities");
+            }
+
             return new User(
                     appUser.getUsername(), appUser.getPassword(), true, true, true, true,
-                    /* User Roles */
-                    Objects.isNull(appUser.getRole()) ?
-                            new ArrayList(List.of(new SimpleGrantedAuthority("default")))
-                            : new ArrayList(
-                                    List.of(new SimpleGrantedAuthority("Admin"),
-                                            new SimpleGrantedAuthority("Client"),
-                                            new SimpleGrantedAuthority("Warehouse Admin"),
-                                            new SimpleGrantedAuthority("Market Admin")))
-                            .stream().toList());
+                    new ArrayList(List.of(new SimpleGrantedAuthority(appUser.getRole().getName())))
+            );
         }
         throw new UsernameNotFoundException(email);
     }
 
 
-    public void save(UserEntity user) {
+    public boolean save(UserEntity user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRole(roleRepository.getRoleEntityByName("Client"));
         userRepository.save(user);
+        return true;
     }
 
     public void login(String email, String password) {

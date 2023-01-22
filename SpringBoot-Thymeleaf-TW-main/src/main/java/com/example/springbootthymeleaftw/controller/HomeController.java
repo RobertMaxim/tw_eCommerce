@@ -13,11 +13,12 @@ public class HomeController {
     private final SecurityService securityService;
 
     @GetMapping()
-    public String open(Model model, String error, String logout){
+    public String open(Model model, String error, String logout) {
         if (!securityService.isAuthenticated()) {
             return "login";
         }
 
+        model.addAttribute("name", securityService.getAuthenticated().getName());
         return "index";
     }
 }

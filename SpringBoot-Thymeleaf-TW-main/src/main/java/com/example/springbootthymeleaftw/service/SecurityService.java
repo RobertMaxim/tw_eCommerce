@@ -15,4 +15,13 @@ public class SecurityService {
         }
         return authentication.isAuthenticated();
     }
+
+    public Authentication getAuthenticated(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || AnonymousAuthenticationToken.class.
+                isAssignableFrom(authentication.getClass())) {
+            return null;
+        }
+        return authentication;
+    }
 }
