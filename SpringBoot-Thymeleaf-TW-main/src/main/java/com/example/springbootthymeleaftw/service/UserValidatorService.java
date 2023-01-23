@@ -3,10 +3,13 @@ package com.example.springbootthymeleaftw.service;
 import com.example.springbootthymeleaftw.model.entity.UserEntity;
 import com.example.springbootthymeleaftw.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import java.util.Optional;
 
 @Service
 public class UserValidatorService implements Validator {
@@ -41,24 +44,40 @@ public class UserValidatorService implements Validator {
         */
         String passwordRegexPattern = "^(?:(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*)[^\s]{8,}$";
 
-        Boolean alreadyExistingAccount=userRepository.findByEmail(user.getEmail()).isPresent();
+        Boolean alreadyExistingAccount = userRepository.findByEmail(user.getEmail()).isPresent();
         Boolean isValidUserLength = !(user.getUsername().length() < 2) && !(user.getUsername().length() > 32);
-        Boolean isValidEmail =  user.getEmail().matches(emailRegexPattern);
+        Boolean isValidEmail = user.getEmail().matches(emailRegexPattern);
         Boolean isValidPassword = user.getPassword().matches(passwordRegexPattern);
         Boolean arePasswordTheSame = user.getPassword().equals(user.getPasswordConfirm());
 
 
-
         if (!isValidUserLength)
             errors.rejectValue("username", "user.isValidUserLength");
-        if(alreadyExistingAccount)
-            errors.rejectValue("email","user.isUsedEmail");
-        if(!isValidEmail)
+        if (alreadyExistingAccount)
+            errors.rejectValue("email", "user.isUsedEmail");
+        if (!isValidEmail)
             errors.rejectValue("email", "user.isValidEmail");
-        if(!isValidPassword)
+        if (!isValidPassword)
             errors.rejectValue("password", "user.isValidPassword");
-        if(!arePasswordTheSame)
+        if (!arePasswordTheSame)
             errors.rejectValue("passwordConfirm", "user.isPasswordTheSame");
+    }
 
+    public void resetPasswordValidate(Object user, Errors errors) {
+        UserEntity userEntity = (UserEntity) user;
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "user.isPasswordEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "user.isPasswordEmpty");
+
+        String passwordRegexPattern = "^(?:(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*)[^\s]{8,}$";
+
+        Boolean isValidPassword = userEntity.getPassword().matches(passwordRegexPattern);
+        Boolean arePasswordTheSame = userEntity.getPassword().equals(userEntity.getPasswordConfirm());
+
+        if (!isValidPassword) {
+            errors.rejectValue("password", "user.isValidPassword");
+        }
+        if (!arePasswordTheSame) {
+            errors.rejectValue("passwordConfirm", "user.isPasswordTheSame");
+        }
     }
 }

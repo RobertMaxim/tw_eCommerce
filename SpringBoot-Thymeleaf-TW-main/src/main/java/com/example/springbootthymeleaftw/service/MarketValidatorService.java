@@ -14,8 +14,6 @@ import org.springframework.validation.Validator;
 @Service
 public class MarketValidatorService implements Validator {
     @Autowired
-    private MarketService marketService;
-    @Autowired
     private MarketRepository marketRepository;
     @Autowired
     private UserRepository userRepository;

@@ -9,6 +9,7 @@ import com.example.springbootthymeleaftw.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service

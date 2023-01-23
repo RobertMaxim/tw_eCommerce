@@ -1,7 +1,10 @@
 package com.example.springbootthymeleaftw.controller;
 
+import com.example.springbootthymeleaftw.config.CurrentUser;
 import com.example.springbootthymeleaftw.service.SecurityService;
+import com.example.springbootthymeleaftw.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class LoginController {
     private final SecurityService securityService;
+    @Autowired
+    private final WarehouseService warehouseService;
 
     @GetMapping()
-    public String open(Model model, String error, String logout){
+    public String open(Model model, String error, String logout) {
+
         if (securityService.isAuthenticated()) {
+
             return "redirect:/";
         }
 
@@ -30,13 +37,13 @@ public class LoginController {
     }
 
     @PostMapping("")
-    public String login(Model model, String error, String logout){
+    public String login(Model model, String error, String logout) {
         return "index";
     }
 
 
     @GetMapping("/error")
-    public String error(Model model, String error, String logout){
+    public String error(Model model, String error, String logout) {
         return "login";
     }
 

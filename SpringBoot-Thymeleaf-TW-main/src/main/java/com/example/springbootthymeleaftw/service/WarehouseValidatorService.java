@@ -16,8 +16,6 @@ import org.springframework.validation.Validator;
 @Service
 public class WarehouseValidatorService implements Validator {
     @Autowired
-    private WarehouseService warehouseService;
-    @Autowired
     private WarehouseRepository warehouseRepository;
     @Autowired
     private UserRepository userRepository;

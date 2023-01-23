@@ -1,9 +1,14 @@
 package com.example.springbootthymeleaftw.service;
 
+import com.example.springbootthymeleaftw.config.CurrentUser;
+import com.example.springbootthymeleaftw.model.entity.Market;
 import com.example.springbootthymeleaftw.model.entity.RoleEntity;
 import com.example.springbootthymeleaftw.model.entity.UserEntity;
+import com.example.springbootthymeleaftw.model.entity.Warehouse;
+import com.example.springbootthymeleaftw.repository.MarketRepository;
 import com.example.springbootthymeleaftw.repository.RoleRepository;
 import com.example.springbootthymeleaftw.repository.UserRepository;
+import com.example.springbootthymeleaftw.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,25 +29,28 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final WarehouseRepository warehouseRepository;
+    private final MarketRepository marketRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<UserEntity> optUser = userRepository.findByEmail(email);
         if (optUser.isPresent()) {
             UserEntity appUser = optUser.get();
+            Object business = null;
 
             if (appUser.getRole() == null) {
                 throw new UsernameNotFoundException("User " + appUser.getUsername() + " has no authorities");
             }
-
-            return new User(
-                    appUser.getUsername(), appUser.getPassword(), true, true, true, true,
-                    new ArrayList(List.of(new SimpleGrantedAuthority(appUser.getRole().getName())))
-            );
+            if (appUser.getRole().getName().equals(roleRepository.getRoleEntityByName("Warehouse_Admin").getName())) {
+                business = warehouseRepository.getWarehouseByAdminEmail(appUser.getEmail());
+            } else if (appUser.getRole().getName().equals(roleRepository.getRoleEntityByName("Market_Admin").getName())) {
+                business = marketRepository.findMarketByAdminEmail(appUser.getEmail());
+            }
+            return new CurrentUser(appUser, business);
         }
         throw new UsernameNotFoundException(email);
     }
-
 
     public boolean save(UserEntity user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -52,7 +60,6 @@ public class UserService implements UserDetailsService {
 
     public void login(String email, String password) {
         UserDetails userDetails = this.loadUserByUsername(email);
-
         if (Objects.isNull(userDetails))
             return;
 

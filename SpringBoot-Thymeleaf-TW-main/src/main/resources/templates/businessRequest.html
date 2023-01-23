@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:include="fragments/components::header">
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2 class="form-heading text-center">Businesses sign-up requests</h2>
+        <div class="form-group">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Market business name</th>
+                    <th scope="col">Identification Code</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Signup Status</th>
+                    <th scope="col">Action</th>
+
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <span class="has-error text-danger" th:text="${emptyMarketList}"></span>
+                    </td>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="market:${marketList}">
+                    <th scope="row" th:text="${marketList.indexOf(market)+1}"></th>
+                    <td th:text="${market.name}"></td>
+                    <td th:text="${market.identificationCode}"></td>
+                    <td th:text="${market.address}"></td>
+                    <td th:text="${market.signupStatus}"></td>
+                    <td>
+                        <div class="btn-group">
+                            <form method="POST" th:object="${selectedMarket}"
+                                  th:action="@{/businessRequest/approveMarket}">
+                                <input type="hidden" th:value="${market.id}" name="id"/>
+                                <input type="hidden" th:value="${market.name}" name="name"/>
+                                <input type="hidden" th:value="${market.identificationCode}" name="identificationCode"/>
+                                <input type="hidden" th:value="${market.address}" name="address"/>
+                                <input type="hidden" th:value="${market.signupStatus}" name="signupStatus"/>
+                                <input type="hidden" th:value="${market.admin}" name="admin"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Approve</button>
+                            </form>
+                            &nbsp
+                            <form method="POST" th:object="${selectedMarket}"
+                                  th:action="@{/businessRequest/denyMarket}">
+                                <input type="hidden" th:value="${market.id}" name="id"/>
+                                <input type="hidden" th:value="${market.name}" name="name"/>
+                                <input type="hidden" th:value="${market.identificationCode}" name="identificationCode"/>
+                                <input type="hidden" th:value="${market.address}" name="address"/>
+                                <input type="hidden" th:value="${market.signupStatus}" name="signupStatus"/>
+                                <input type="hidden" th:value="${market.admin}" name="admin"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Deny</button>
+                            </form>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Warehouse business name</th>
+                    <th scope="col">Identification Code</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Signup Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <span class="has-error text-danger" th:text="${emptyWarehouseList}"></span>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="warehouse:${warehouseList}">
+                    <th scope="row" th:text="${warehouseList.indexOf(warehouse)+1}"></th>
+                    <td th:text="${warehouse.name}"></td>
+                    <td th:text="${warehouse.identificationCode}"></td>
+                    <td th:text="${warehouse.address}"></td>
+                    <td th:text="${warehouse.signupStatus}"></td>
+                    <td>
+                        <div class="btn-group">
+                            <form method="POST" th:object="${selectedWarehouse}"
+                                  th:action="@{/businessRequest/approveWarehouse}">
+                                <input type="hidden" th:value="${warehouse.id}" name="id"/>
+                                <input type="hidden" th:value="${warehouse.name}" name="name"/>
+                                <input type="hidden" th:value="${warehouse.identificationCode}"
+                                       name="identificationCode"/>
+                                <input type="hidden" th:value="${warehouse.address}" name="address"/>
+                                <input type="hidden" th:value="${warehouse.signupStatus}" name="signupStatus"/>
+                                <input type="hidden" th:value="${warehouse.admin}" name="admin"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Approve</button>
+                            </form>
+                            &nbsp
+                            <form method="POST" th:object="${selectedWarehouse}"
+                                  th:action="@{/businessRequest/denyWarehouse}">
+                                <input type="hidden" th:value="${warehouse.id}" name="id"/>
+                                <input type="hidden" th:value="${warehouse.name}" name="name"/>
+                                <input type="hidden" th:value="${warehouse.identificationCode}"
+                                       name="identificationCode"/>
+                                <input type="hidden" th:value="${warehouse.address}" name="address"/>
+                                <input type="hidden" th:value="${warehouse.signupStatus}" name="signupStatus"/>
+                                <input type="hidden" th:value="${warehouse.admin}" name="admin"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Deny</button>
+                            </form>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+                <button class="btn btn-primary"
+                        style="width:350px;height: 50px; margin-bottom: 10px;"
+                        type="submit"
+                        th:onclick="|window.location.href='/adminHomepage'|">
+                    Back
+                </button>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments/components::bootstrap_script"/>
+
+</body>
+</html>

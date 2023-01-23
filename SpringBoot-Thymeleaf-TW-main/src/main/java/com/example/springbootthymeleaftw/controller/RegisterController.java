@@ -52,7 +52,7 @@ public class RegisterController {
         System.out.println(model);
         model.addAttribute("marketUserForm", new MarketUserDTO());
 
-        return "market_register";
+        return "marketRegister";
     }
 
     @PostMapping("marketRegister")
@@ -60,11 +60,11 @@ public class RegisterController {
         marketValidatorService.validate(marketUserForm,bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "market_register";
+            return "marketRegister";
         }
 
         if (!marketService.save(marketUserForm))
-            return "market_register";
+            return "marketRegister";
 
         userService.login(marketUserForm.getEmail(), marketUserForm.getPassword());
         return "redirect:/";
@@ -75,7 +75,7 @@ public class RegisterController {
         System.out.println(model);
         model.addAttribute("warehouseUserForm", new WarehouseUserDTO());
 
-        return "warehouse_register";
+        return "warehouseRegister";
     }
 
     @PostMapping("warehouseRegister")
@@ -83,11 +83,11 @@ public class RegisterController {
         warehouseValidatorService.validate(warehouseUserForm,bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "warehouse_register";
+            return "warehouseRegister";
         }
 
         if (!warehouseService.save(warehouseUserForm))
-            return "warehouse_register";
+            return "warehouseRegister";
 
         userService.login(warehouseUserForm.getEmail(), warehouseUserForm.getPassword());
         return "redirect:/";

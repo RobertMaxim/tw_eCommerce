@@ -31,11 +31,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return http
                 .authorizeRequests()
                 .antMatchers( "/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/inventory").hasAnyRole("B2B")
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .failureUrl("/login-error") //if you want a separate page for failed auth.
+                //.failureUrl("/login-error") //if you want a separate page for failed auth.
                 .permitAll()
                 .and()
                 .logout()
