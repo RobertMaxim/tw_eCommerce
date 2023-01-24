@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:include="fragments/components::header">
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+
+        <h2 class="form-heading text-center">Client homepage</h2>
+        <p class="form-heading text-center">Logged in as <span th:text="${name}"></span></p>
+
+
+        <div class="container bg-light">
+            <div class="text-center col">
+                <form method="POST" th:action="@{/logout}">
+                    <button class="btn btn-primary"
+                            style="width:350px;height: 50px; margin-bottom: 10px;"
+                            type="submit">
+                        Log out
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div th:include="fragments/components::bootstrap_script"/>
+
+</body>
+</html>
