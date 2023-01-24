@@ -63,6 +63,15 @@ public class UserValidatorService implements Validator {
             errors.rejectValue("passwordConfirm", "user.isPasswordTheSame");
     }
 
+    public String checkIfSignupStatusIsAccepted(String signupStatus) {
+        if (signupStatus.equals("Pending"))
+            return "This account hasn't been approved by an admin.";
+        else if (signupStatus.equals("Denied")) {
+            return "This account sign-up request has been rejected by an admin.";
+        }
+        return "";
+    }
+
     public void resetPasswordValidate(Object user, Errors errors) {
         UserEntity userEntity = (UserEntity) user;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "user.isPasswordEmpty");

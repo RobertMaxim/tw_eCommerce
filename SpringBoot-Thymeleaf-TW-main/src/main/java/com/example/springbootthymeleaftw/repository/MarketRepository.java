@@ -3,6 +3,7 @@ package com.example.springbootthymeleaftw.repository;
 import com.example.springbootthymeleaftw.model.entity.Market;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;

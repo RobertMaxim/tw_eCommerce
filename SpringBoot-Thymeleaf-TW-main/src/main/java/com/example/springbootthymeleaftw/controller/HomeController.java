@@ -2,6 +2,7 @@ package com.example.springbootthymeleaftw.controller;
 
 import com.example.springbootthymeleaftw.config.CurrentUser;
 import com.example.springbootthymeleaftw.service.SecurityService;
+import com.example.springbootthymeleaftw.service.UserValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeController {
     private final SecurityService securityService;
+    private final UserValidatorService userValidatorService;
 
     @GetMapping()
     public String open(Model model, String error, String logout) {
@@ -24,16 +26,27 @@ public class HomeController {
         if (user.getUserEntity().getRole().getName().equals("Admin")) {
             return "redirect:/adminHomepage";
         }
+        else if(user.getUserEntity().getRole().getName().equals("Client")){
+            return "clientHomepage";
+        }
 
         if (user.getMarketDetails() != null) {
-            if (user.getMarketDetails().getSignupStatus().equals("Pending")) {
-                model.addAttribute("accountInvalid", "This account hasn't been approved by an admin");
+
+            String attributeValue = userValidatorService.checkIfSignupStatusIsAccepted(user.getMarketDetails().getSignupStatus());
+            if (!attributeValue.isEmpty()) {
+                model.addAttribute("accountInvalid", attributeValue);
                 return "login";
             }
+            else{
+                return "marketHomepage";
+            }
         } else if (user.getWarehouseDetails() != null) {
-            if (user.getWarehouseDetails().getSignupStatus().equals("Pending")) {
-                model.addAttribute("accountInvalid", "This account hasn't been approved by an admin");
+            String attributeValue = userValidatorService.checkIfSignupStatusIsAccepted(user.getWarehouseDetails().getSignupStatus());
+            if (!attributeValue.isEmpty()) {
+                model.addAttribute("accountInvalid", attributeValue);
                 return "login";
+            } else {
+                return "redirect:/warehouseHomepage";
             }
         }
 

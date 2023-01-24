@@ -18,12 +18,15 @@ public class StorageWarehouse {
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
 
-    public Warehouse getWarehouse() {
-        return warehouse;
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Product getProduct() {
@@ -34,11 +37,20 @@ public class StorageWarehouse {
         this.product = product;
     }
 
-    public Integer getId() {
-        return id;
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
     }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
 }

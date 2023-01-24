@@ -42,7 +42,6 @@ public class BusinessRequestController {
             } else {
                 model.addAttribute("marketList", markets);
                 model.addAttribute("selectedMarket", new Market());
-
             }
         }
         if (warehousesOpt.isPresent()) {

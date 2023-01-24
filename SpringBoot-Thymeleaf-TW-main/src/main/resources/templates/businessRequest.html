@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 <head th:include="fragments/components::header">
+    <title>Business requests</title>
 </head>
 
 <body>
@@ -21,11 +22,7 @@
                     <th scope="col">Action</th>
 
                 </tr>
-                <tr>
-                    <td colspan="6">
-                        <span class="has-error text-danger" th:text="${emptyMarketList}"></span>
-                    </td>
-                </tr>
+                <td th:colspan="6" class="has-error text-danger" th:text="${emptyWarehouseList}"></td>
                 </thead>
 
                 <tbody>
@@ -77,11 +74,7 @@
                     <th scope="col">Signup Status</th>
                     <th scope="col">Action</th>
                 </tr>
-                <tr>
-                    <td colspan="6">
-                        <span class="has-error text-danger" th:text="${emptyWarehouseList}"></span>
-                    </td>
-                </tr>
+                <td th:colspan="6" class="has-error text-danger" th:text="${emptyWarehouseList}"></td>
                 </thead>
                 <tbody>
                 <tr th:each="warehouse:${warehouseList}">
@@ -121,12 +114,12 @@
                 </tr>
                 </tbody>
             </table>
-                <button class="btn btn-primary"
-                        style="width:350px;height: 50px; margin-bottom: 10px;"
-                        type="submit"
-                        th:onclick="|window.location.href='/adminHomepage'|">
-                    Back
-                </button>
+            <button class="btn btn-primary"
+                    style="width:350px;height: 50px; margin-bottom: 10px;"
+                    type="submit"
+                    th:onclick="|window.location.href='/adminHomepage'|">
+                Back
+            </button>
         </div>
     </div>
 </div>

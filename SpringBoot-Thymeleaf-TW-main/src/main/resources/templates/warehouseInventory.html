@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<script>
+    function getContent() {
+        var div_val = document.getElementById("editableCell").innerHTML;
+        document.getElementById("quantity").value = div_val;
+        if (div_val == '') {
+            //alert("option alert or show error message")
+            return false;
+            //empty form will not be submitted. You can also alert this message like this.
+        }
+    }
+</script>
+<head th:include="fragments/components::header">
+    <title>Inventory</title>
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2 class="form-heading text-center">Warehouse inventory</h2>
+        <div class="form-group">
+            <br>
+            <button class="btn btn-primary"
+                    style="width:350px;height: 50px; margin-bottom: 10px;"
+                    type="submit"
+                    th:onclick="|window.location.href='/warehouseHomepage'|">
+                Add a product
+            </button>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th class="text-center" scope="col">Product name</th>
+                    <th class="text-center" scope="col">Producer</th>
+                    <th class="text-center" scope="col">Quantity</th>
+                    <th class="text-center" scope="col">Price per quantity</th>
+                    <th class="text-center" scope="col">Color</th>
+                    <th class="text-center" scope="col">Weight</th>
+
+                </tr>
+                <td th:colspan="7" class="has-error text-danger" th:text="${emptyProductsList}"></td>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="inventoryItem:${productsList}">
+                    <th scope="row" th:text="${productsList.indexOf(inventoryItem)+1}"></th>
+                    <td class="text-center" th:text="${inventoryItem.product.name}"></td>
+                    <td class="text-center" th:text="${inventoryItem.product.producer}"></td>
+                    <td class="text-center" id="editableCell" th:text="${inventoryItem.quantity}" th:contenteditable="true">
+<!--                        <input class="text-center" type="text" th:field="*{selectedProduct.quantity}" th:value="${inventoryItem.quantity}" />-->
+                    </td>
+                    <td class="text-center" th:text="${inventoryItem.product.price}+' RON'"></td>
+                    <td class="text-center"
+                        th:if="${(inventoryItem.product.color==null)}"
+                        th:text="'-'"></td>
+                    <td class="text-center" th:if="${inventoryItem.product.color!=null}"
+                        th:text="${inventoryItem.product.color}"></td>
+                    <td class="text-center"
+                        th:if="${(inventoryItem.product.weight==null)}"
+                        th:text="'-'"></td>
+                    <td class="text-center" th:if="${inventoryItem.product.weight!=null}"
+                        th:text="${inventoryItem.product.weight.intValue()}+' grams'"></td>
+
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <form method="POST" onsubmit="return getContent()" th:object="${selectedProduct}"
+                                  th:action="@{/warehouseHomepage/saveQuantity}">
+                                <input type="hidden" th:value="${inventoryItem.id}" name="id"/>
+                                <input id="quantity" type="hidden" name="quantity"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Save</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary"
+                    style="width:350px;height: 50px; margin-bottom: 10px;"
+                    type="submit"
+                    th:onclick="|window.location.href='/warehouseHomepage'|">
+                Back
+            </button>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments/components::bootstrap_script"/>
+
+</body>
+</html>

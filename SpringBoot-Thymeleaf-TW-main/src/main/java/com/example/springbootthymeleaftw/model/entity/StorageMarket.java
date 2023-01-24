@@ -10,20 +10,23 @@ public class StorageMarket {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "market_id", nullable = false)
     private Market market;
 
-    public Market getMarket() {
-        return market;
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setMarket(Market market) {
-        this.market = market;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Product getProduct() {
@@ -34,11 +37,20 @@ public class StorageMarket {
         this.product = product;
     }
 
-    public Integer getId() {
-        return id;
+    public Market getMarket() {
+        return market;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMarket(Market market) {
+        this.market = market;
     }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
 }

@@ -26,6 +26,7 @@ public class AdminController {
         if (!securityService.isAuthenticated()) {
             return "login";
         }
+        CurrentUser currentUser=(CurrentUser) securityService.getAuthenticated().getPrincipal();
 
         model.addAttribute("name", securityService.getAuthenticated().getName());
 
@@ -35,19 +36,22 @@ public class AdminController {
     @GetMapping("resetPassword")
     public String openResetPassword(Model model){
         CurrentUser user=(CurrentUser) securityService.getAuthenticated().getPrincipal();
+
         model.addAttribute("adminAccount", user.getUserEntity());
         return "resetPassword";
     }
 
     @PostMapping("resetPassword")
-    public String resetPassword(@ModelAttribute("adminAccount") UserEntity account, BindingResult bindingResult)
+    public String resetPassword(@ModelAttribute("adminAccount") UserEntity account,Model model, BindingResult bindingResult)
     {
         userValidatorService.resetPasswordValidate(account,bindingResult);
         if (!bindingResult.hasErrors()) {
             adminService.passwordReset(account);
+            model.addAttribute("passwordFeedback", "Password changed successfully");
             return "resetPassword";
         }
 
+        model.addAttribute("passwordFeedback", "Password didn't met the requirements");
         return "resetPassword";
     }
 }

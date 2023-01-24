@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:include="fragments/components::header">
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2 class="form-heading text-center">Market supply requests</h2>
+        <div class="form-group">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th class="text-center" scope="col">Market business name</th>
+                    <th class="text-center" scope="col">Identification Code</th>
+                    <th class="text-center" scope="col">Address</th>
+                    <th class="text-center" scope="col">Action</th>
+
+                </tr>
+                <td th:colspan="5" class="has-error text-danger" th:text="${emptySupplierRequestsList}"></td>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="request:${supplierRequests}">
+                    <th scope="row" th:text="${supplierRequests.indexOf(request)+1}"></th>
+                    <td class="text-center" th:text="${request.market.name}"></td>
+                    <td class="text-center" th:text="${request.market.identificationCode}"></td>
+                    <td class="text-center" th:text="${request.market.address}"></td>
+                    <td class="text-center" >
+                        <div class="btn-group">
+                            <form method="POST" th:object="${selectedRequest}" th:action="@{/warehouseHomepage/approveSupplyRequest}">
+                                <input type="hidden" th:value="${request.id}" name="id"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Approve</button>
+                            </form>
+                            &nbsp
+                            <form method="POST" th:object="${selectedRequest}"
+                                  th:action="@{/warehouseHomepage/denySupplyRequest}">
+                                <input type="hidden" th:value="${request.id}" name="id"/>
+                                <button class="btn btn-sm btn-secondary" type="submit">Deny</button>
+                            </form>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary"
+                    style="width:350px;height: 50px; margin-bottom: 10px;"
+                    type="submit"
+                    th:onclick="|window.location.href='/warehouseHomepage'|">
+                Back
+            </button>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments/components::bootstrap_script"/>
+
+</body>
+</html>

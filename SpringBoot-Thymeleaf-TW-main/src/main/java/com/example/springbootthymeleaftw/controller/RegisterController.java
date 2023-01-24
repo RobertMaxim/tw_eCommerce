@@ -56,7 +56,7 @@ public class RegisterController {
     }
 
     @PostMapping("marketRegister")
-    public String marketSignIn(@ModelAttribute("marketUserForm") MarketUserDTO marketUserForm, BindingResult bindingResult) {
+    public String marketSignUp(@ModelAttribute("marketUserForm") MarketUserDTO marketUserForm, BindingResult bindingResult) {
         marketValidatorService.validate(marketUserForm,bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -66,8 +66,8 @@ public class RegisterController {
         if (!marketService.save(marketUserForm))
             return "marketRegister";
 
-        userService.login(marketUserForm.getEmail(), marketUserForm.getPassword());
-        return "redirect:/";
+        //userService.login(marketUserForm.getEmail(), marketUserForm.getPassword());
+        return "login";
     }
 
     @GetMapping("warehouse")
@@ -79,7 +79,7 @@ public class RegisterController {
     }
 
     @PostMapping("warehouseRegister")
-    public String warehouseSignIn(@ModelAttribute("warehouseUserForm") WarehouseUserDTO warehouseUserForm, BindingResult bindingResult) {
+    public String warehouseSignUp(@ModelAttribute("warehouseUserForm") WarehouseUserDTO warehouseUserForm, BindingResult bindingResult) {
         warehouseValidatorService.validate(warehouseUserForm,bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -89,7 +89,7 @@ public class RegisterController {
         if (!warehouseService.save(warehouseUserForm))
             return "warehouseRegister";
 
-        userService.login(warehouseUserForm.getEmail(), warehouseUserForm.getPassword());
-        return "redirect:/";
+        //userService.login(warehouseUserForm.getEmail(), warehouseUserForm.getPassword());
+        return "login";
     }
 }
